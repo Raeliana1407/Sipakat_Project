@@ -1,0 +1,118 @@
+.info-wrapper {
+  min-height: 100vh;
+  background-color: #050505;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  padding-bottom: 5rem;
+}
+
+.info-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.info-card {
+  background-color: #111;
+  border: 1px solid #222;
+  border-top: 3px solid #D4AF37;
+  padding: 2.5rem;
+  border-radius: 8px;
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  color: #D4AF37;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #222;
+  padding-bottom: 1rem;
+}
+
+/* List Persyaratan */
+.req-item {
+  margin-bottom: 1.5rem;
+}
+
+.req-item h3 {
+  font-size: 1.1rem;
+  color: #eee;
+  margin-bottom: 0.8rem;
+}
+
+.req-item ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.req-item ul li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.req-item ul li::before {
+  content: "•";
+  color: #D4AF37;
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+/* Schedule */
+.schedule-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid #222;
+  color: #aaa;
+}
+
+.schedule-row.closed {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+/* FAQ */
+.faq-section {
+  background-color: #111;
+  padding: 3rem;
+  border-radius: 8px;
+  border: 1px solid #222;
+}
+
+.faq-item {
+  margin-bottom: 2rem;
+}
+
+.faq-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq-item h3 {
+  color: #D4AF37;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.faq-item p {
+  color: #aaa;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Responsif untuk HP */
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}

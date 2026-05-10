@@ -1,0 +1,128 @@
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Pakai background ruang kerja/pelayanan yang digelapkan */
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), rgba(10, 10, 10, 1)),
+                    url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1920&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  font-family: 'Inter', sans-serif;
+  padding: 2rem;
+}
+
+.login-card {
+  background-color: #111111;
+  padding: 3rem;
+  border-radius: 8px;
+  border-top: 3px solid #D4AF37; /* Aksen Gold khas SIPAKAT */
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.login-header .logo-text {
+  font-family: 'Playfair Display', serif;
+  color: #D4AF37;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+}
+
+.login-header p {
+  color: #888;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  color: #ccc;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 4px;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #D4AF37;
+  background-color: #222;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+}
+
+.remember-me {
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.forgot-password {
+  color: #D4AF37;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.forgot-password:hover {
+  color: #fff;
+}
+
+.btn-login-submit {
+  width: 100%;
+  background-color: #D4AF37;
+  color: #0a0a0a;
+  border: none;
+  padding: 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-login-submit:hover {
+  background-color: #b5952f;
+  transform: translateY(-2px);
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 2rem;
+  color: #666;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.back-link:hover {
+  color: #D4AF37;
+}

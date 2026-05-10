@@ -1,0 +1,456 @@
+/* Base Wrapper */
+.home-wrapper {
+  background-color: #0a0a0a; /* Warna background gelap elegan */
+  color: #f0f0f0;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* SECTION 1: HERO */
+.hero-section {
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(10, 10, 10, 1)),
+                    url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1920&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 5%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+}
+
+.nav-logo .logo-text {
+  font-size: 1.8rem;
+  font-family: 'Playfair Display', serif;
+  color: #D4AF37;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 3rem;
+}
+
+.nav-links li {
+  color: #e0e0e0;
+  cursor: pointer;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.nav-links li:hover {
+  color: #D4AF37;
+}
+
+.btn-login {
+  background-color: transparent;
+  color: #D4AF37;
+  border: 1px solid #D4AF37;
+  padding: 0.6rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s;
+}
+
+.btn-login:hover {
+  background-color: #D4AF37;
+  color: #0a0a0a;
+}
+
+.hero-content {
+  text-align: center;
+  margin-top: -5vh;
+}
+
+.hero-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: #D4AF37;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 4.5rem;
+  font-weight: normal;
+  line-height: 1.15;
+  margin-bottom: 2.5rem;
+}
+
+.btn-primary {
+  background-color: #D4AF37;
+  color: #0a0a0a;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  background-color: #b5952f;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 3rem;
+  gap: 5rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-item h2 {
+  font-family: 'Playfair Display', serif;
+  color: #D4AF37;
+  font-size: 2.5rem;
+  font-weight: normal;
+  margin-bottom: 0.2rem;
+}
+
+.stat-item p {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  color: #888;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* GLOBAL SECTION STYLES */
+section {
+  padding: 6rem 10%;
+}
+
+.section-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: #888;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: normal;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: #fff;
+}
+
+/* SECTION 2: DISCOVER */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.service-card {
+  background-color: #151515;
+  padding: 3rem 2rem;
+  border-top: 2px solid #D4AF37;
+  transition: transform 0.3s;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+}
+
+.service-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #D4AF37;
+}
+
+.service-card p {
+  color: #aaa;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+
+.btn-link:hover {
+  color: #D4AF37;
+}
+
+/* SECTION 3: HERITAGE */
+.heritage-section {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  background-color: #0f0f0f;
+}
+
+.heritage-content {
+  flex: 1;
+}
+
+.heritage-content .section-title, 
+.heritage-content .section-subtitle {
+  text-align: left;
+}
+
+.heritage-text {
+  color: #aaa;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.heritage-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: #D4AF37;
+  border-left: 2px solid #D4AF37;
+  padding-left: 1.5rem;
+}
+
+.heritage-image {
+  flex: 1;
+}
+
+.heritage-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  filter: grayscale(20%);
+}
+
+/* SECTION 4: JOURNAL */
+.journal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.journal-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 4px 4px 0 0;
+}
+
+.journal-info {
+  background-color: #151515;
+  padding: 1.5rem;
+  border-radius: 0 0 4px 4px;
+}
+
+.journal-info .date {
+  font-size: 0.8rem;
+  color: #D4AF37;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.journal-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+/* FOOTER */
+.main-footer {
+  background-color: #050505;
+  padding: 4rem 10% 2rem;
+  border-top: 1px solid #222;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand p {
+  color: #888;
+  margin-top: 1rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.footer-links h3, .footer-contact h3 {
+  font-family: 'Playfair Display', serif;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-weight: normal;
+}
+
+.footer-links p, .footer-contact p {
+  color: #888;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footer-links p:hover {
+  color: #D4AF37;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid #222;
+  color: #555;
+  font-size: 0.8rem;
+}
+/* =========================================
+   MODAL TIKET ANTREAN PUBLIK
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(5px);
+}
+
+.ticket-card {
+  background-color: #111;
+  border: 2px solid #D4AF37;
+  border-radius: 15px;
+  padding: 40px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(212, 175, 55, 0.2);
+  color: white;
+}
+
+.ticket-card h3 {
+  color: #D4AF37;
+  margin-top: 0;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.ticket-number {
+  font-size: 60px;
+  font-weight: bold;
+  color: #ffffff;
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px dashed #D4AF37;
+  margin: 20px 0;
+  letter-spacing: 2px;
+}
+
+.ticket-info {
+  color: #aaa;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.btn-ticket-action {
+  background: #D4AF37;
+  color: #000;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.btn-ticket-action:hover {
+  background: #e5c158;
+  transform: translateY(-2px);
+}
+
+.btn-close-ticket {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
+}
+/* Tambahan untuk Dropdown Pilihan Layanan */
+.ticket-select-group {
+  text-align: left;
+  margin-bottom: 25px;
+}
+
+.ticket-select-group label {
+  display: block;
+  color: #cccccc;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.ticket-select {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none; /* Ngilangin panah default browser */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23D4AF37%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px top 50%;
+  background-size: 12px auto;
+}
+
+.ticket-select:focus {
+  border-color: #D4AF37;
+  background-color: #222;
+}
+
+.ticket-select option {
+  background-color: #111;
+  color: white;
+}

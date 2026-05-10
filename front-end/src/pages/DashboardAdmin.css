@@ -1,0 +1,286 @@
+/* DashboardAdmin.css */
+.dashboard-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.95)), 
+              url('https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat fixed;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: #111111;
+  border-bottom: 2px solid #D4AF37; /* Aksen Emas */
+}
+
+.dashboard-logo {
+  color: #D4AF37;
+  font-family: 'Playfair Display', serif; /* Font klasik/elegan */
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 2px;
+}
+
+.btn-logout {
+  background-color: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #ef4444;
+  color: white;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+.dashboard-content {
+  padding: 40px 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.table-card {
+  background-color: #151515;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  border: 1px solid #222;
+}
+
+.table-title {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: #D4AF37;
+  font-size: 22px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 15px;
+}
+
+.samsat-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.samsat-table th {
+  background-color: #0f0f0f;
+  color: #D4AF37;
+  padding: 15px;
+  font-weight: 600;
+  border-bottom: 2px solid #D4AF37;
+}
+
+.samsat-table td {
+  padding: 15px;
+  border-bottom: 1px solid #222;
+  color: #cccccc;
+}
+
+.samsat-table tr:hover {
+  background-color: #1a1a1a;
+}
+
+.nomor-highlight {
+  font-weight: bold;
+  color: #D4AF37;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+/* Desain Badge Status */
+.badge {
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Warna dinamis tergantung status antrean */
+.badge.menunggu {
+  background-color: #422006;
+  color: #facc15;
+  border: 1px solid #facc15;
+}
+
+.badge.dipanggil {
+  background-color: #064e3b;
+  color: #34d399;
+  border: 1px solid #34d399;
+}
+
+.badge.selesai {
+  background-color: #1e1e1e;
+  color: #9ca3af;
+  border: 1px solid #4b5563;
+}
+/* ========================================================================================
+   TAMBAHAN: TAB NAVIGASI & TABEL KENDARAAN
+   ======================================================================================== */
+.dashboard-tabs {
+  display: flex;
+  gap: 5px; /* Reduce gap for tighter look */
+  margin-bottom: 30px;
+  border-bottom: 1px solid #333; /* Subtler border along the whole tab line */
+  padding-bottom: 0; /* Important: remove padding here so underline aligns perfectly */
+}
+
+.tab-btn {
+  background-color: transparent;
+  color: #aaaaaa; /* Subtle gray for inactive tabs */
+  border: none;
+  font-size: 16px; /* Slightly refined size */
+  font-weight: 600;
+  cursor: pointer;
+  padding: 15px 30px; /* Consistent padding */
+  border-radius: 0; /* Remove rounded corners for clean underline */
+  /* This creates the transparent placeholder for the gold underline */
+  border-bottom: 3px solid transparent; 
+  transition: all 0.3s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.tab-btn:hover {
+  color: #ffffff; /* Fades to white on hover */
+  /* Remove previous background fill on hover for blending */
+}
+
+.tab-btn.active {
+  color: #D4AF37; /* Text becomes pure gold when active */
+  /* The active state has a bold gold underline */
+  border-bottom: 3px solid #D4AF37; 
+  background-color: transparent; /* No background fill, stays transparent */
+  box-shadow: none; /* Remove previous shadow */
+}
+
+/* Redesign action buttons for consistency */
+.btn-panggil {
+  padding: 8px 15px;
+  cursor: pointer;
+  background-color: #34d399; /* Green from theme */
+  color: #064e3b;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.btn-panggil:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+}
+
+.btn-selesai {
+  padding: 8px 15px;
+  cursor: pointer;
+  background-color: transparent;
+  color: #9ca3af; /* Fade white/gray */
+  border: 1px solid #4b5563; /* Subtle border */
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.btn-selesai:hover {
+  background-color: #4b5563;
+  color: white;
+}
+/* =========================================
+   MODAL / POP-UP TAMBAH KENDARAAN
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85); /* Kaca gelap background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Biar selalu paling depan */
+  backdrop-filter: blur(5px);
+}
+
+.modal-card {
+  background-color: #111;
+  border: 1px solid #D4AF37;
+  border-radius: 10px;
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 40px rgba(212, 175, 55, 0.15);
+}
+
+.modal-card h3 {
+  color: #D4AF37;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  color: #ccc;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  color: white;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: all 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #D4AF37;
+  background-color: #222;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-cancel {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-save {
+  background: #D4AF37;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
