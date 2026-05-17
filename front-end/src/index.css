@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
 
+/* TAMBAHAN BARU: Kunci layar biar gak bisa digeser ke samping */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -17,4 +23,6 @@ body {
 #root {
   width: 100%;
   min-height: 100vh;
+  /* Jaga-jaga biar div utama React lu juga kekunci */
+  overflow-x: hidden; 
 }

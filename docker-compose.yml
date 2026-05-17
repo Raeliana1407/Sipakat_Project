@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  sipakat_db:
+    image: mysql:8.0
+    container_name: sipakat_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: sipakat_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  sipakat_backend:
+    build: ./backend
+    container_name: sipakat_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=sipakat_db
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=sipakat_db
+    depends_on:
+      - sipakat_db
+
+volumes:
+  mysql_data:
