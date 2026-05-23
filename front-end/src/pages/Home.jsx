@@ -218,7 +218,20 @@ const Home = () => {
                   ✓ Berhasil dicetak!
                 </p>
                 
-                <button className="btn-ticket-action" onClick={handleCloseModal}>Selesai</button>
+                {/* MODIFIKASI BARU DI SINI: Tombol dialihkan ke halaman tunggu antrean dengan membawa state */}
+                <button 
+                  className="btn-ticket-action" 
+                  onClick={() => {
+                    navigate('/tunggu-antrean', { 
+                      state: { nomor: nomorTiket, layanan: layananTerpilih } 
+                    });
+                    // Bersihkan state modal setelah pindah halaman
+                    setNomorTiket(null);
+                    setIsTicketModalOpen(false);
+                  }}
+                >
+                  Pantau Status Antrean
+                </button>
               </>
             )}
 

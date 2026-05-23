@@ -49,5 +49,14 @@ const updateStatusAntrean = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+const hapusAntreanSelesai = async (req, res) => {
+    try {
+        // Hapus semua data antrean (Reset Total)
+        await Antrean.destroy({ where: {}, truncate: true });
+        res.json({ message: "History antrean berhasil direset total!" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
-module.exports = { getAntrean, tambahAntrean, updateStatusAntrean };
+module.exports = { getAntrean, tambahAntrean, updateStatusAntrean, hapusAntreanSelesai };

@@ -26,5 +26,30 @@ const tambahKendaraan = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+const updateKendaraan = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Kendaraan.update(req.body, { where: { id } });
+        res.json({ message: "Data kendaraan berhasil diperbarui!" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
-module.exports = { getKendaraan, tambahKendaraan };
+// FITUR BARU: Hapus Data
+const hapusKendaraan = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Kendaraan.destroy({ where: { id } });
+        res.json({ message: "Data kendaraan berhasil dihapus!" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = { 
+  getKendaraan, 
+  tambahKendaraan,  
+  updateKendaraan, // <-- Tambah ini
+  hapusKendaraan   // <-- Tambah ini
+};

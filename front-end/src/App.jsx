@@ -5,6 +5,7 @@ import Login from './pages/Login'; // Pastikan 'L' nya besar kalau nama filenya 
 import CekPajak from './pages/CekPajak';
 import Informasi from './pages/Informasi';
 import DashboardAdmin from './pages/DashboardAdmin';
+import TungguAntrean from './pages/TungguAntrean';
 
 const DummyPage = ({ title }) => (
   <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#0a0a0a', color: '#D4AF37', fontFamily: 'Playfair Display' }}>
@@ -23,6 +24,7 @@ function App() {
         <Route path="/dashboard-admin" element={<DashboardAdmin />} />
         <Route path="/cek-pajak" element={<CekPajak />} />
         <Route path="/informasi" element={<Informasi />} />
+        <Route path="/tunggu-antrean" element={<TungguAntrean />} />
       </Routes>
     </Router>
   );

@@ -12,15 +12,17 @@ const DashboardAdmin = () => {
   const [daftarKendaraan, setDaftarKendaraan] = useState([]);
   const navigate = useNavigate();
 
-  // --- STATE BARU UNTUK MODAL & FORM KENDARAAN ---
+  // --- STATE MODAL & FORM KENDARAAN (DIPERBARUI) ---
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editId, setEditId] = useState(null); // Penanda kalau lagi mode Edit
   const [formData, setFormData] = useState({
     plat_nomor: '',
     nama_pemilik: '',
     merek_kendaraan: '',
     tahun_kendaraan: '',
     total_pajak: '',
-    tanggal_jatuh_tempo: ''
+    tanggal_jatuh_tempo: '',
+    status_pajak: 'Belum Lunas'
   });
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const DashboardAdmin = () => {
       return; 
     }
     ambilDataAntrean();
-    ambilDataKendaraan(); // Panggil fungsi narik data kendaraan pas halaman dimuat
+    ambilDataKendaraan(); // Panggil fungsionalitas narik data kendaraan pas halaman dimuat
   }, [navigate]);
 
   // --- API CALLS ---
@@ -76,54 +78,78 @@ const DashboardAdmin = () => {
     }
   };
 
-  // --- FUNGSI KENDARAAN (BARU) ---
+  const handleResetAntrean = async () => {
+    if (window.confirm('Yakin mau mereset/menghapus semua history antrean hari ini?')) {
+      try {
+        await axios.delete('http://localhost:5000/api/antrean/reset');
+        alert('History antrean berhasil dikosongkan!');
+        ambilDataAntrean();
+      } catch (error) {
+        alert('Gagal mereset antrean! Pastikan backend sudah diupdate.');
+      }
+    }
+  };
+
+  // --- FUNGSI FULL CRUD KENDARAAN ---
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-const handleSubmitKendaraan = async (e) => {
+  const bukaModalTambah = () => {
+    setEditId(null);
+    setFormData({ plat_nomor: '', nama_pemilik: '', merek_kendaraan: '', tahun_kendaraan: '', total_pajak: '', tanggal_jatuh_tempo: '', status_pajak: 'Belum Lunas' });
+    setIsModalOpen(true);
+  };
+
+  const bukaModalEdit = (item) => {
+    setEditId(item.id); // Tandai ID yang mau diedit
+    setFormData({
+      plat_nomor: item.plat_nomor,
+      nama_pemilik: item.nama_pemilik,
+      merek_kendaraan: item.merek_kendaraan,
+      tahun_kendaraan: item.tahun_kendaraan,
+      total_pajak: item.total_pajak,
+      tanggal_jatuh_tempo: item.tanggal_jatuh_tempo ? item.tanggal_jatuh_tempo.split('T')[0] : '', 
+      status_pajak: item.status_pajak || 'Belum Lunas'
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleSubmitKendaraan = async (e) => {
     e.preventDefault();
     try {
-      // 1. Ambil token yang disave pas login tadi
       const token = localStorage.getItem('token');
+      const config = { headers: { 'Authorization': `Bearer ${token}` } };
 
-      // 2. Nembak API sekalian bawa Token di bagian Headers
-      const response = await axios.post('http://localhost:5000/api/kendaraan', formData, {
-        headers: {
-          'Authorization': `Bearer ${token}` // <-- Tiket masuk satpamnya di sini
-        }
-      });
-      
-      alert(response.data.message);
-      
-      setIsModalOpen(false); // Tutup pop-up
-      ambilDataKendaraan(); // Refresh tabel
-      
-      // Kosongin form
-      setFormData({
-        plat_nomor: '', nama_pemilik: '', merek_kendaraan: '', 
-        tahun_kendaraan: '', total_pajak: '', tanggal_jatuh_tempo: ''
-      });
-    } catch (error) {
-      console.error("Detail Error:", error); 
-      
-      // 3. Tangkap error khusus dari Validation Middleware (express-validator)
-      if (error.response && error.response.data && error.response.data.errors) {
-        const pesanError = error.response.data.errors.map(err => err.msg).join('\n');
-        alert("Validasi Gagal:\n" + pesanError);
-      } 
-      // 4. Tangkap error kalau Token JWT ga ada/salah (401/403)
-      else if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        alert(`Akses Ditolak: ${error.response.data.message}\nSilakan login ulang!`);
-      }
-      // Tangkap error dari database (misal plat dobel)
-      else if (error.response && error.response.data && error.response.data.error) {
-        alert(error.response.data.error); 
-      } 
-      else if (error.response) {
-        alert(`Gagal! Server merespon dengan status: ${error.response.status}.`);
+      if (editId) {
+        // Jalur Update (PUT)
+        const response = await axios.put(`http://localhost:5000/api/kendaraan/${editId}`, formData, config);
+        alert(response.data.message || "Data berhasil diperbarui!");
       } else {
-        alert('Gagal konek ke server! Pastikan backend nyala.');
+        // Jalur Tambah Baru (POST)
+        const response = await axios.post('http://localhost:5000/api/kendaraan', formData, config);
+        alert(response.data.message || "Data berhasil ditambahkan!");
+      }
+      
+      setIsModalOpen(false);
+      ambilDataKendaraan();
+    } catch (error) {
+      console.error("Detail Error:", error);
+      alert('Gagal menyimpan data kendaraan!');
+    }
+  };
+
+  const handleDeleteKendaraan = async (id, nopol) => {
+    if (window.confirm(`Yakin mau menghapus kendaraan dengan Nopol ${nopol} secara permanen?`)) {
+      try {
+        const token = localStorage.getItem('token');
+        await axios.delete(`http://localhost:5000/api/kendaraan/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        alert('Data kendaraan berhasil dihapus!');
+        ambilDataKendaraan();
+      } catch (error) {
+        alert('Gagal menghapus data kendaraan!');
       }
     }
   };
@@ -140,6 +166,7 @@ const handleSubmitKendaraan = async (e) => {
 
   // Format Tanggal
   const formatTanggal = (tanggal) => {
+    if (!tanggal) return '-';
     return new Date(tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
@@ -174,9 +201,15 @@ const handleSubmitKendaraan = async (e) => {
             <>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
                 <h3 className="table-title" style={{ border: 'none', margin: 0, padding: 0 }}>Daftar Antrean Kendaraan</h3>
-                <button onClick={handleTambahManual} style={{ backgroundColor: '#D4AF37', color: '#000', padding: '10px 20px', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}>
-                  + Cetak Antrean Manual
-                </button>
+                
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button onClick={handleResetAntrean} style={{ backgroundColor: '#ef4444', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}>
+                    Reset History Antrean
+                  </button>
+                  <button onClick={handleTambahManual} style={{ backgroundColor: '#D4AF37', color: '#000', padding: '10px 20px', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}>
+                    + Cetak Antrean Manual
+                  </button>
+                </div>
               </div>
               
               <table className="samsat-table">
@@ -197,7 +230,7 @@ const handleSubmitKendaraan = async (e) => {
                         <td className="nomor-highlight">{item.nomor_antrean}</td>
                         <td>{item.layanan}</td>
                         <td>
-                          <span className={`badge ${item.status.toLowerCase()}`}>{item.status}</span>
+                          <span className={`badge ${item.status ? item.status.toLowerCase() : ''}`}>{item.status}</span>
                         </td>
                         <td style={{ display: 'flex', gap: '10px' }}>
                           {item.status === 'Menunggu' && (
@@ -224,8 +257,7 @@ const handleSubmitKendaraan = async (e) => {
             <>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
                 <h3 className="table-title" style={{ border: 'none', margin: 0, padding: 0 }}>Database Pajak Kendaraan</h3>
-                {/* TOMBOL DENGAN ONCLICK UNTUK BUKA MODAL */}
-                <button onClick={() => setIsModalOpen(true)} style={{ backgroundColor: '#D4AF37', color: '#000', padding: '10px 20px', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}>
+                <button onClick={bukaModalTambah} style={{ backgroundColor: '#D4AF37', color: '#000', padding: '10px 20px', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}>
                   + Tambah Data Kendaraan
                 </button>
               </div>
@@ -239,6 +271,7 @@ const handleSubmitKendaraan = async (e) => {
                     <th>Total Pajak</th>
                     <th>Jatuh Tempo</th>
                     <th>Status</th>
+                    <th>Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -251,15 +284,20 @@ const handleSubmitKendaraan = async (e) => {
                         <td style={{ color: '#D4AF37' }}>{formatRupiah(item.total_pajak)}</td>
                         <td>{formatTanggal(item.tanggal_jatuh_tempo)}</td>
                         <td>
-                          <span className={`badge ${item.status_pajak.toLowerCase().replace(' ', '.')}`}>
-                            {item.status_pajak}
+                          <span className={`badge ${item.status_pajak ? item.status_pajak.toLowerCase().replace(' ', '.') : 'belum.lunas'}`}>
+                            {item.status_pajak || 'Belum Lunas'}
                           </span>
+                        </td>
+                        {/* 🔥 BERHASIL DITAMBAHKAN: Kolom Aksi berisi Tombol Edit & Hapus */}
+                        <td style={{ display: 'flex', gap: '8px' }}>
+                          <button onClick={() => bukaModalEdit(item)} style={{ padding: '6px 10px', backgroundColor: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Edit</button>
+                          <button onClick={() => handleDeleteKendaraan(item.id, item.plat_nomor)} style={{ padding: '6px 10px', backgroundColor: '#ef4444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Hapus</button>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="6" style={{ padding: '30px', textAlign: 'center', color: '#666' }}>Belum ada data kendaraan terdaftar.</td>
+                      <td colSpan="7" style={{ padding: '30px', textAlign: 'center', color: '#666' }}>Belum ada data kendaraan terdaftar.</td>
                     </tr>
                   )}
                 </tbody>
@@ -270,42 +308,53 @@ const handleSubmitKendaraan = async (e) => {
         </div>
       </main>
 
-      {/* --- MODAL TAMBAH KENDARAAN (OVERLAY) --- */}
+      {/* --- MODAL TAMBAH & EDIT KENDARAAN --- */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-card">
-            <h3>Registrasi Kendaraan Baru</h3>
+            <h3>{editId ? 'Edit Data Kendaraan' : 'Registrasi Kendaraan Baru'}</h3>
             <form onSubmit={handleSubmitKendaraan}>
               <div className="form-group">
                 <label>Plat Nomor</label>
-                <input type="text" name="plat_nomor" placeholder="Contoh: DP 1234 XX" value={formData.plat_nomor} onChange={handleInputChange} required />
+                <input type="text" name="plat_nomor" value={formData.plat_nomor} onChange={handleInputChange} required />
               </div>
               <div className="form-group">
                 <label>Nama Pemilik</label>
-                <input type="text" name="nama_pemilik" placeholder="Nama sesuai STNK" value={formData.nama_pemilik} onChange={handleInputChange} required />
+                <input type="text" name="nama_pemilik" value={formData.nama_pemilik} onChange={handleInputChange} required />
               </div>
               <div className="form-group">
                 <label>Merek & Tipe Kendaraan</label>
-                <input type="text" name="merek_kendaraan" placeholder="Contoh: Honda Vario 160" value={formData.merek_kendaraan} onChange={handleInputChange} required />
+                <input type="text" name="merek_kendaraan" value={formData.merek_kendaraan} onChange={handleInputChange} required />
               </div>
               <div style={{ display: 'flex', gap: '15px' }}>
                 <div className="form-group" style={{ flex: 1 }}>
                   <label>Tahun</label>
-                  <input type="number" name="tahun_kendaraan" placeholder="2022" value={formData.tahun_kendaraan} onChange={handleInputChange} required />
+                  <input type="number" name="tahun_kendaraan" value={formData.tahun_kendaraan} onChange={handleInputChange} required />
                 </div>
                 <div className="form-group" style={{ flex: 1 }}>
                   <label>Total Pajak (Rp)</label>
-                  <input type="number" name="total_pajak" placeholder="250000" value={formData.total_pajak} onChange={handleInputChange} required />
+                  <input type="number" name="total_pajak" value={formData.total_pajak} onChange={handleInputChange} required />
                 </div>
               </div>
-              <div className="form-group">
-                <label>Tanggal Jatuh Tempo</label>
-                <input type="date" name="tanggal_jatuh_tempo" value={formData.tanggal_jatuh_tempo} onChange={handleInputChange} required />
+              <div style={{ display: 'flex', gap: '15px' }}>
+                <div className="form-group" style={{ flex: 1 }}>
+                  <label>Tanggal Jatuh Tempo</label>
+                  <input type="date" name="tanggal_jatuh_tempo" value={formData.tanggal_jatuh_tempo} onChange={handleInputChange} required />
+                </div>
+                <div className="form-group" style={{ flex: 1 }}>
+                  <label>Status Pajak</label>
+                  <select name="status_pajak" value={formData.status_pajak} onChange={handleInputChange} style={{ width: '100%', padding: '10px', backgroundColor: '#111', color: '#fff', border: '1px solid #444', borderRadius: '4px' }}>
+                    <option value="Belum Lunas">Belum Lunas</option>
+                    <option value="AKTIF">AKTIF</option>
+                    <option value="MENUNGGAK">MENUNGGAK</option>
+                    <option value="BLOKIR">BLOKIR</option>
+                  </select>
+                </div>
               </div>
 
               <div className="modal-actions">
                 <button type="button" className="btn-cancel" onClick={() => setIsModalOpen(false)}>Batal</button>
-                <button type="submit" className="btn-save">Simpan Data</button>
+                <button type="submit" className="btn-save">{editId ? 'Update Data' : 'Simpan Data'}</button>
               </div>
             </form>
           </div>

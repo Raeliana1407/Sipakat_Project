@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './CekPajak.css';
 
 const CekPajak = () => {
@@ -7,6 +8,12 @@ const CekPajak = () => {
   const [platNomor, setPlatNomor] = useState('');
   const [loading, setLoading] = useState(false);
   const [hasilPajak, setHasilPajak] = useState(null);
+
+  // --- STATE BARU BUAT POP-UP ANTREAN ---
+  const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
+  const [nomorTiket, setNomorTiket] = useState(null);
+  const [isLoadingAntrean, setIsLoadingAntrean] = useState(false);
+  const [layananTerpilih, setLayananTerpilih] = useState('Pajak Tahunan');
 
   const handleCekPajak = (e) => {
     e.preventDefault();
@@ -16,7 +23,6 @@ const CekPajak = () => {
     // Simulasi loading nembak API backend (selama 1.5 detik)
     setTimeout(() => {
       setLoading(false);
-      // Mockup data kembalian dari database
       setHasilPajak({
         nopol: platNomor.toUpperCase(),
         pemilik: 'Hamba Allah',
@@ -30,6 +36,34 @@ const CekPajak = () => {
         jatuhTempo: '15 Agustus 2026'
       });
     }, 1500);
+  };
+
+  // --- FUNGSI BUAT NYETAK ANTREAN ---
+  const handleAmbilAntrean = async () => {
+    setIsLoadingAntrean(true);
+    
+    let kodeLoket = 'A';
+    if (layananTerpilih === 'Pajak 5 Tahunan (Ganti Plat)') kodeLoket = 'B';
+    if (layananTerpilih === 'Balik Nama / Mutasi') kodeLoket = 'C';
+    if (layananTerpilih === 'Pengambilan STNK / TNKB') kodeLoket = 'D';
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/antrean', {
+        layanan: `${layananTerpilih} (Self-Service)`,
+        kode_loket: kodeLoket 
+      });
+      setNomorTiket(response.data.nomor_antrean);
+    } catch (error) {
+      alert('Maaf, sistem antrean sedang sibuk. Coba lagi nanti!');
+    } finally {
+      setIsLoadingAntrean(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsTicketModalOpen(false);
+    setNomorTiket(null);
+    setLayananTerpilih('Pajak Tahunan'); 
   };
 
   return (
@@ -62,7 +96,7 @@ const CekPajak = () => {
           </button>
         </form>
 
-        {/* Kartu Hasil Pencarian (Muncul setelah tombol diklik) */}
+        {/* Kartu Hasil Pencarian */}
         {hasilPajak && (
           <div className="result-card fade-in">
             <div className="result-header">
@@ -105,12 +139,82 @@ const CekPajak = () => {
               </div>
             </div>
 
-            <button className="btn-action" onClick={() => navigate('/login')}>
+            {/* --- TOMBOL UNTUK BUKA MODAL --- */}
+            <button className="btn-action" onClick={() => setIsTicketModalOpen(true)}>
               Lanjut Ambil Antrean SAMSAT
             </button>
           </div>
         )}
       </main>
+
+      {/* --- MODAL POP-UP ANTREAN --- */}
+      {isTicketModalOpen && (
+        <div className="modal-overlay">
+          <div className="ticket-card">
+            
+            {!nomorTiket ? (
+              <>
+                <h3>Ambil Nomor Antrean</h3>
+                <p className="ticket-info">Silakan pilih jenis layanan SAMSAT yang Anda butuhkan hari ini.</p>
+                
+                <div className="ticket-select-group">
+                  <label>Jenis Layanan:</label>
+                  <select 
+                    className="ticket-select" 
+                    value={layananTerpilih} 
+                    onChange={(e) => setLayananTerpilih(e.target.value)}
+                  >
+                    <option value="Pajak Tahunan">Pajak Tahunan (Pengesahan STNK)</option>
+                    <option value="Pajak 5 Tahunan (Ganti Plat)">Pajak 5 Tahunan (Ganti Plat)</option>
+                    <option value="Balik Nama / Mutasi">Balik Nama / Mutasi Kendaraan</option>
+                    <option value="Pengambilan STNK / TNKB">Pengambilan STNK / TNKB</option>
+                  </select>
+                </div>
+                
+                <button 
+                  className="btn-ticket-action" 
+                  onClick={handleAmbilAntrean}
+                  disabled={isLoadingAntrean}
+                >
+                  {isLoadingAntrean ? 'Mencetak...' : 'Cetak Tiket Antrean'}
+                </button>
+                
+                <button className="btn-close-ticket" onClick={handleCloseModal}>Batal</button>
+              </>
+            ) : (
+              <>
+                <h3>Tiket Anda</h3>
+                <p className="ticket-info">Harap screenshot atau ingat nomor ini.</p>
+                
+                <div className="ticket-number">
+                  {nomorTiket}
+                </div>
+                
+                <p style={{ color: '#aaa', fontSize: '14px', marginBottom: '10px' }}>
+                  Layanan: <strong style={{color: 'white'}}>{layananTerpilih}</strong>
+                </p>
+                
+                <p style={{ color: '#34d399', fontWeight: 'bold', marginBottom: '20px' }}>
+                  ✓ Berhasil dicetak!
+                </p>
+                
+                <button 
+                  className="btn-ticket-action" 
+                  onClick={() => {
+                    navigate('/tunggu-antrean', { 
+                      state: { nomor: nomorTiket, layanan: layananTerpilih } 
+                    });
+                  }}
+                >
+                  Pantau Status Antrean
+                </button>
+              </>
+            )}
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
