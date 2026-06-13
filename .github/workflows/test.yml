@@ -34,7 +34,6 @@ jobs:
       run: npm test -- --collectCoverageFrom="controllers/kendaraanController.js"
       working-directory: ./backend
       env:
-        NODE_ENV: test
         DB_HOST: 127.0.0.1
         DB_USER: root
         DB_PASS: ''
