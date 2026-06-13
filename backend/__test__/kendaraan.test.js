@@ -43,7 +43,7 @@ describe('Kendaraan API - Regression Test Suite', () => {
 
   describe('GET /api/kendaraan', () => {
     it('3. [Happy Path] Berhasil mengambil semua daftar kendaraan', async () => {
-      const res = await request(app).get('/api/kendaraan'.set('Authorization', 'Bearer ' + token));
+      const res = await request(app).get('/api/kendaraan').set('Authorization', 'Bearer ' + token);
       expect(res.statusCode).toEqual(200);
       expect(Array.isArray(res.body)).toBeTruthy(); // Atau res.body.data tergantung response lu
     });
