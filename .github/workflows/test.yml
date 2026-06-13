@@ -5,7 +5,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    # Bikin database virtual sementara di GitHub
     services:
       mysql:
         image: mysql:8.0
@@ -30,10 +29,11 @@ jobs:
       working-directory: ./backend
       
     - name: Run Tests (Modul Kendaraan)
-      # Memastikan GitHub Action mengeksekusi test yang sama dengan lokal lu
-      run: npm test -- --collectCoverageFrom="controllers/kendaraanController.js"
+      # Menambahkan NODE_ENV=test langsung di depan perintah npm test
+      run: NODE_ENV=test npm test -- --collectCoverageFrom="controllers/kendaraanController.js"
       working-directory: ./backend
       env:
+        NODE_ENV: test
         DB_HOST: 127.0.0.1
         DB_USER: root
         DB_PASS: ''
