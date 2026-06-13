@@ -29,8 +29,10 @@ jobs:
       working-directory: ./backend
       
     - name: Run Tests (Modul Kendaraan)
-      # Menambahkan NODE_ENV=test langsung di depan perintah npm test
-      run: NODE_ENV=test npm test -- --collectCoverageFrom="controllers/kendaraanController.js"
+      # Kita kasih izin eksekusi dulu (chmod +x) baru jalankan langsung jest
+      run: |
+        chmod +x ./node_modules/.bin/jest
+        ./node_modules/.bin/jest --coverage --collectCoverageFrom="controllers/kendaraanController.js"
       working-directory: ./backend
       env:
         DB_HOST: 127.0.0.1
