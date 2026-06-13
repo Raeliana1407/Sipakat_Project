@@ -5,7 +5,9 @@ const jwt = require('jsonwebtoken');
 const token = jwt.sign({ id: 1, role: 'admin' }, 'rahasia_sipakat_123');
 describe('Kendaraan API - Regression Test Suite', () => {
   let kendaraanIdDummy;
-  
+  beforeAll(async () => {
+    await db.sync({ force: true });
+  });
   // Bikin plat nomor yang selalu unik setiap kali npm test dijalankan
   const platDinamic = 'DP ' + Date.now().toString().slice(-4) + ' XX';
 
@@ -22,8 +24,8 @@ describe('Kendaraan API - Regression Test Suite', () => {
       const res = await request(app).post('/api/kendaraan').set('Authorization', 'Bearer ' + token).send(dataBaru);
       
       expect(res.statusCode).toBeGreaterThanOrEqual(200); 
-      expect(res.body).toHaveProperty('message');
-      kendaraanIdDummy = res.body.data ? res.body.data.id : 1; 
+      expect(res.body).toHaveProperty('data'); // Tambahin cek ini
+      kendaraanIdDummy = res.body.data.id;
     });
 
     it('2. [Error Scenario] Gagal jika input duplikat', async () => {

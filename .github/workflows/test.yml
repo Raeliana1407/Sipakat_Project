@@ -28,6 +28,15 @@ jobs:
       run: npm install
       working-directory: ./backend
       
+    - name: Run Database Migration
+      run: npx sequelize-cli db:migrate # Atau perintah sinkronisasi lu
+      working-directory: ./backend
+      env:
+        DB_HOST: 127.0.0.1
+        DB_USER: root
+        DB_PASS: ''
+        DB_NAME: sipakat_db
+      
     - name: Run Tests (Modul Kendaraan)
       # Kita kasih izin eksekusi dulu (chmod +x) baru jalankan langsung jest
       run: |
