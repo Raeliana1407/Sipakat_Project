@@ -1,7 +1,8 @@
 const request = require('supertest');
 const app = require('../server');
 const db = require('../config/database'); // Pastikan path ini sesuai dengan file database lu
-
+const jwt = require('jsonwebtoken');
+const token = jwt.sign({ id: 1, role: 'admin' }, 'rahasia_sipakat_123');
 describe('Kendaraan API - Regression Test Suite', () => {
   let kendaraanIdDummy;
   
@@ -18,7 +19,7 @@ describe('Kendaraan API - Regression Test Suite', () => {
         total_pajak: 250000,                  // <--- Tambahin ini
         tanggal_jatuh_tempo: '2026-12-31'     // <--- Tambahin ini
       };
-      const res = await request(app).post('/api/kendaraan').send(dataBaru);
+      const res = await request(app).post('/api/kendaraan').set('Authorization', 'Bearer ' + token).send(dataBaru);
       
       expect(res.statusCode).toBeGreaterThanOrEqual(200); 
       expect(res.body).toHaveProperty('message');
@@ -34,7 +35,7 @@ describe('Kendaraan API - Regression Test Suite', () => {
         total_pajak: 250000,                  // <--- Tambahin ini juga
         tanggal_jatuh_tempo: '2026-12-31'     // <--- Tambahin ini juga
       };
-      const res = await request(app).post('/api/kendaraan').send(dataDuplikat);
+      const res = await request(app).post('/api/kendaraan').set('Authorization', 'Bearer ' + token).send(dataDuplikat);
       
       expect(res.statusCode).toEqual(400); 
     });
