@@ -27,10 +27,12 @@ jobs:
         
     - name: Install Dependencies
       run: npm install
+      working-directory: ./backend
       
     - name: Run Tests (Modul Kendaraan)
       # Memastikan GitHub Action mengeksekusi test yang sama dengan lokal lu
       run: npm test -- --collectCoverageFrom="controllers/kendaraanController.js"
+      working-directory: ./backend
       env:
         NODE_ENV: test
         DB_HOST: 127.0.0.1
