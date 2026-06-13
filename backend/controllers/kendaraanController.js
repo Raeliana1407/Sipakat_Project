@@ -28,7 +28,8 @@ const cekKendaraanByPlat = async (req, res) => {
 
 const tambahKendaraan = async (req, res) => {
     try {
-        const { plat_nomor, nama_pemilik, merek_kendaraan, tahun_kendaraan, total_pajak, tanggal_jatuh_tempo } = req.body;
+        // FIX TYPO: Tambahin status_pajak di sini biar gak ReferenceError
+        const { plat_nomor, nama_pemilik, merek_kendaraan, tahun_kendaraan, total_pajak, tanggal_jatuh_tempo, status_pajak } = req.body;
 
         await Kendaraan.create({
             plat_nomor, nama_pemilik, merek_kendaraan, tahun_kendaraan, total_pajak, tanggal_jatuh_tempo,
@@ -37,9 +38,12 @@ const tambahKendaraan = async (req, res) => {
 
         res.json({ message: "Data kendaraan berhasil ditambahkan, Bos!" });
     } catch (error) {
+        
         if (error.name === 'SequelizeUniqueConstraintError') {
-            return res.status(400).json({ error: "Plat nomor ini sudah terdaftar di sistem!" });
+             return res.status(400).json({ error: "Plat nomor ini sudah terdaftar di sistem!" });
         }
+        // =====================================================================
+
         res.status(500).json({ error: error.message });
     }
 };

@@ -43,10 +43,15 @@ db.sync({ force: false })
   .then(() => {
     console.log('Database tersinkronisasi via Sequelize!');
     // Server baru jalan kalau database udah fix nyambung
-    app.listen(PORT, () => {
-        console.log(`Server SIPAKAT berjalan di http://localhost:${PORT}`);
-    });
+    if (process.env.NODE_ENV !== 'test') {
+        app.listen(PORT, () => {
+            console.log(`Server SIPAKAT berjalan di http://localhost:${PORT}`);
+        });
+    }
   })
   .catch(err => {
     console.error('Waduh, gagal sinkronisasi database:', err);
   });
+
+// WAJIB ADA DI BARIS PALING AKHIR BIAR BISA DI-IMPORT OLEH FILE TEST
+module.exports = app;
