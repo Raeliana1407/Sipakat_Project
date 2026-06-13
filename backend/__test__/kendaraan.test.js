@@ -43,25 +43,25 @@ describe('Kendaraan API - Regression Test Suite', () => {
 
   describe('GET /api/kendaraan', () => {
     it('3. [Happy Path] Berhasil mengambil semua daftar kendaraan', async () => {
-      const res = await request(app).get('/api/kendaraan');
+      const res = await request(app).get('/api/kendaraan'.set('Authorization', 'Bearer ' + token));
       expect(res.statusCode).toEqual(200);
       expect(Array.isArray(res.body)).toBeTruthy(); // Atau res.body.data tergantung response lu
     });
 
     it('4. [Error Scenario] Mengembalikan 404 jika URL salah', async () => {
-      const res = await request(app).get('/api/kendaraan_salah');
+      const res = await request(app).get('/api/kendaraan_salah').set('Authorization', 'Bearer ' + token);
       expect(res.statusCode).toEqual(404);
     });
   });
 
   describe('GET /api/kendaraan/cek/:plat_nomor', () => {
     it('5. [Happy Path] Berhasil mencari 1 kendaraan spesifik', async () => {
-      const res = await request(app).get(`/api/kendaraan/cek/${platDinamic}`);
+      const res = await request(app).get(`/api/kendaraan/cek/${platDinamic}`).set('Authorization', 'Bearer ' + token);
       expect(res.statusCode).toBeGreaterThanOrEqual(200);
     });
 
     it('6. [Error Scenario] Mengembalikan 404 jika plat tidak ditemukan', async () => {
-      const res = await request(app).get('/api/kendaraan/cek/PLAT-NGASAL');
+      const res = await request(app).get('/api/kendaraan/cek/PLAT-NGASAL').set('Authorization', 'Bearer ' + token);
       expect(res.statusCode).toEqual(404);
     });
   });
@@ -69,24 +69,24 @@ describe('Kendaraan API - Regression Test Suite', () => {
   describe('PUT /api/kendaraan/:id', () => {
     it('7. [Happy Path] Berhasil mengupdate data kendaraan', async () => {
       const dataUpdate = { merek_kendaraan: 'Honda Vario 160cc' };
-      const res = await request(app).put(`/api/kendaraan/${kendaraanIdDummy}`).send(dataUpdate);
+      const res = await request(app).put(`/api/kendaraan/${kendaraanIdDummy}`).set('Authorization', 'Bearer ' + token).send(dataUpdate);
       expect(res.statusCode).toBeGreaterThanOrEqual(200);
     });
 
     it('8. [Error Scenario] Gagal update jika ID ngasal', async () => {
-      const res = await request(app).put('/api/kendaraan/999999').send({ merek_kendaraan: 'Yamaha' });
+      const res = await request(app).put('/api/kendaraan/999999').set('Authorization', 'Bearer ' + token).send({ merek_kendaraan: 'Yamaha' });
       expect(res.statusCode).toEqual(404);
     });
   });
 
   describe('DELETE /api/kendaraan/:id', () => {
     it('9. [Happy Path] Berhasil menghapus data kendaraan', async () => {
-      const res = await request(app).delete(`/api/kendaraan/${kendaraanIdDummy}`);
+      const res = await request(app).delete(`/api/kendaraan/${kendaraanIdDummy}`).set('Authorization', 'Bearer ' + token);
       expect(res.statusCode).toBeGreaterThanOrEqual(200);
     });
 
     it('10. [Error Scenario] Gagal menghapus jika ID tidak ada di database', async () => {
-      const res = await request(app).delete(`/api/kendaraan/999999`);
+      const res = await request(app).delete(`/api/kendaraan/999999`).set('Authorization', 'Bearer ' + token);
       expect(res.statusCode).toEqual(404); 
     });
   });
