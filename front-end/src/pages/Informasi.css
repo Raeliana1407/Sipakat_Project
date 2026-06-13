@@ -116,3 +116,52 @@
     grid-template-columns: 1fr;
   }
 }
+/* ========================================================================================
+   SINKRONISASI LIGHT THEME UNTUK HALAMAN INFORMASI
+   ======================================================================================== */
+
+/* 1. Matiin background hitam di wrapper utama */
+body.light-theme .info-wrapper {
+  background-color: transparent !important;
+}
+
+/* 2. Warna teks deskripsi header */
+body.light-theme .header-text .description {
+  color: #64748b !important;
+}
+
+/* 3. Kartu Informasi & FAQ (Warna disamakan dengan tema cream global) */
+body.light-theme .info-card,
+body.light-theme .faq-section {
+  background-color: #f2f0ea !important;
+  border: 1px solid #d1cdc4 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 4. Garis bawah pada judul kartu */
+body.light-theme .card-title {
+  border-bottom: 1px solid #d1cdc4 !important;
+  color: #92700e !important; /* Warna bronze/emas gelap */
+}
+
+/* 5. Teks & List di dalam kartu */
+body.light-theme .req-item h3 {
+  color: #1a1a1a !important;
+  font-weight: bold !important;
+}
+
+body.light-theme .req-item ul li,
+body.light-theme .faq-item p {
+  color: #475569 !important;
+}
+
+/* 6. Baris Jadwal Operasional */
+body.light-theme .schedule-row {
+  border-bottom: 1px solid #d1cdc4 !important;
+  color: #475569 !important;
+}
+
+/* 7. Judul Tanya Jawab Umum (FAQ) */
+body.light-theme .faq-item h3 {
+  color: #92700e !important; 
+}

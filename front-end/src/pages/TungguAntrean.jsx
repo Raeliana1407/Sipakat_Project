@@ -1,56 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './TungguAntrean.css';
 
 const TungguAntrean = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   
-  const tiketData = location.state || {
-    nomor: 'A-001', // Default kalau gak ada data
-    layanan: 'Pajak Tahunan'
-  };
+  // Baca dari localStorage, biarkan isi 'null' kalau dia belum pernah ambil tiket
+  const [tiketData, setTiketData] = useState(() => {
+    const savedTiket = localStorage.getItem('tiket_sipakat');
+    return savedTiket ? JSON.parse(savedTiket) : null;
+  });
 
   const [antreanSaatIni, setAntreanSaatIni] = useState('-');
-  const [sisaAntrean, setSisaAntrean] = useState(0);
+  const [sisaAntrean, setSisaAntrean] = useState('-');
   const [status, setStatus] = useState('Menunggu');
 
-  // Tarik data asli dari Backend setiap 3 detik
   useEffect(() => {
     const fetchStatusReal = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/antrean');
         const semuaAntrean = response.data;
         
-        if (semuaAntrean.length === 0) return;
+        if (semuaAntrean.length === 0) {
+            setAntreanSaatIni('-');
+            return;
+        }
 
-        // Cari antrean loket yang lagi dilayani (status 'Dipanggil')
+        // Cari siapa yang lagi dilayani di loket saat ini
         const ygLagiDipanggil = semuaAntrean.filter(item => item.status === 'Dipanggil');
-        
         if (ygLagiDipanggil.length > 0) {
-          // Ambil yang paling terakhir dipanggil
           setAntreanSaatIni(ygLagiDipanggil[ygLagiDipanggil.length - 1].nomor_antrean);
         } else {
-          // Kalau ga ada yang dipanggil, cek yang Selesai
           const ygSelesai = semuaAntrean.filter(item => item.status === 'Selesai');
           if (ygSelesai.length > 0) {
             setAntreanSaatIni(ygSelesai[ygSelesai.length - 1].nomor_antrean);
           } else {
-            setAntreanSaatIni('-'); // Belum ada pelayanan mulai
+            setAntreanSaatIni('-'); 
           }
         }
 
-        // Cari data antrean si User ini sendiri dari DB
-        const dataUserDb = semuaAntrean.find(item => item.nomor_antrean === tiketData.nomor);
-        if (dataUserDb) {
-           setStatus(dataUserDb.status); // Kalau admin klik "Panggil", ini jadi "Dipanggil"
-           
-           // Hitung Sisa Antrean (hitung berapa antrean yang id-nya < id User dan statusnya masih 'Menunggu')
-           const ygNganggur = semuaAntrean.filter(item => 
-              item.status === 'Menunggu' && item.id < dataUserDb.id
-           );
-           setSisaAntrean(ygNganggur.length);
+        // Hitung sisa antrean HANYA JIKA user ini punya tiket
+        if (tiketData) {
+          const dataUserDb = semuaAntrean.find(item => item.nomor_antrean === tiketData.nomor);
+          if (dataUserDb) {
+             setStatus(dataUserDb.status); 
+             const ygNganggur = semuaAntrean.filter(item => 
+                item.status === 'Menunggu' && item.id < dataUserDb.id
+             );
+             setSisaAntrean(ygNganggur.length);
+          }
         }
         
       } catch (error) {
@@ -58,11 +57,17 @@ const TungguAntrean = () => {
       }
     };
 
-    fetchStatusReal(); // Tarik pas halaman pertama kali dibuka
-    const polling = setInterval(fetchStatusReal, 3000); // Polling setiap 3 detik cek DB!
+    fetchStatusReal(); 
+    const polling = setInterval(fetchStatusReal, 3000); 
 
     return () => clearInterval(polling);
-  }, [tiketData.nomor]);
+  }, [tiketData]);
+
+  // Fungsi untuk reset tiket dan ubah mode layar
+  const handleTutupTiket = () => {
+    localStorage.removeItem('tiket_sipakat');
+    setTiketData(null); // Ubah state jadi null, UI otomatis ganti ke mode 'Belum ada tiket'
+  };
 
   return (
     <div className="tunggu-wrapper">
@@ -82,42 +87,70 @@ const TungguAntrean = () => {
         </div>
 
         <div className="status-grid">
+          
+          {/* KARTU 1: NOMOR ANDA (Bisa Dinamis) */}
           <div className="status-card highlight-card">
             <h3>Nomor Anda</h3>
-            <div className="nomor-besar highlight">{tiketData.nomor}</div>
-            <p className="layanan-text">{tiketData.layanan}</p>
-            <div className={`badge-status ${status === 'Menunggu' ? 'waiting' : 'ready'}`}>
-              {status === 'Dipanggil' ? 'Menuju Loket' : status}
-            </div>
+            
+            <div className="nomor-besar highlight">{tiketData ? tiketData.nomor : '-'}</div>
+            <p className="layanan-text">{tiketData ? tiketData.layanan : 'Anda belum mengambil tiket'}</p>
+            
+            {tiketData ? (
+              // Kalau ada tiket, munculin statusnya (Menunggu/Menuju Loket)
+              <div className={`badge-status ${status === 'Menunggu' ? 'waiting' : 'ready'}`}>
+                {status === 'Dipanggil' ? 'Menuju Loket' : status}
+              </div>
+            ) : (
+              // Kalau nggak ada tiket, kasih tombol buat balik ke depan biar bisa ngambil
+              <button 
+                onClick={() => navigate('/')} 
+                style={{ marginTop: '15px', padding: '10px 20px', backgroundColor: '#D4AF37', color: '#000', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}
+              >
+                Ambil Tiket Sekarang
+              </button>
+            )}
           </div>
 
+          {/* KARTU 2: SEDANG DILAYANI */}
           <div className="status-card">
             <h3>Sedang Dilayani (Loket A)</h3>
             <div className="nomor-besar">{antreanSaatIni}</div>
             <div className="info-tambahan">
               <div className="info-box">
-                <span className="label">Sisa Antrean Depan Anda</span>
-                <span className="value">{status === 'Selesai' ? '0' : sisaAntrean} Orang</span>
+                <span className="label">Sisa Depan Anda</span>
+                {/* Hanya tampilkan angka kalau dia punya tiket */}
+                <span className="value">{tiketData ? (status === 'Selesai' ? '0' : sisaAntrean) : '-'} Orang</span>
               </div>
               <div className="info-box">
                 <span className="label">Estimasi Waktu</span>
-                <span className="value">{status === 'Selesai' ? '0' : sisaAntrean * 5} Menit</span>
+                <span className="value">{tiketData ? (status === 'Selesai' ? '0' : sisaAntrean * 5) : '-'} Menit</span>
               </div>
             </div>
           </div>
+          
         </div>
         
-        {status === 'Dipanggil' && (
-          <div className="alert-ready" style={{ marginTop: '2rem', padding: '1.5rem', backgroundColor: 'rgba(46, 204, 113, 0.15)', border: '1px solid #2ecc71', borderRadius: '8px', width: '100%', textAlign: 'center' }}>
+        {/* ALERT: Muncul Pas Dipanggil */}
+        {tiketData && status === 'Dipanggil' && (
+          <div className="alert-ready" style={{ marginTop: '2rem', padding: '1.5rem', backgroundColor: 'rgba(46, 204, 113, 0.15)', border: '1px solid #2ecc71', borderRadius: '8px', textAlign: 'center' }}>
             <strong>Giliran Anda tiba!</strong> Silakan segera menuju ke Loket Pelayanan.
           </div>
         )}
         
-        {status === 'Selesai' && (
-          <div className="alert-ready" style={{ marginTop: '2rem', padding: '1.5rem', backgroundColor: 'rgba(107, 114, 128, 0.15)', border: '1px solid #6b7280', color: '#aaa', borderRadius: '8px', width: '100%', textAlign: 'center' }}>
+        {/* ALERT: Muncul Pas Selesai */}
+        {tiketData && status === 'Selesai' && (
+          <div className="alert-ready" style={{ marginTop: '2rem', padding: '1.5rem', backgroundColor: 'rgba(107, 114, 128, 0.15)', border: '1px solid #6b7280', color: '#aaa', borderRadius: '8px', textAlign: 'center' }}>
             Pelayanan untuk nomor antrean Anda sudah <strong>Selesai</strong>. Terima kasih.
+            <br/><br/>
+            <button 
+              onClick={handleTutupTiket} 
+              style={{ padding: '8px 16px', backgroundColor: '#6b7280', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+            >
+              Hapus Tiket Anda
+            </button>
           </div>
         )}
+
       </div>
     </div>
   );

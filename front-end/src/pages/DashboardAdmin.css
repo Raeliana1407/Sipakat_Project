@@ -78,14 +78,25 @@
   border-bottom: 2px solid #D4AF37;
 }
 
+/* --- PERBAIKAN REKOMENDASI UI TABEL --- */
+.samsat-table tbody tr:nth-child(even) {
+  background-color: #141414; /* Abu-abu sangat gelap untuk baris genap */
+}
+
+.samsat-table tbody tr:nth-child(odd) {
+  background-color: #1a1a1a; /* Abu-abu sedikit lebih terang untuk baris ganjil */
+}
+
 .samsat-table td {
   padding: 15px;
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid #282828; /* Border antar baris dipertegas */
   color: #cccccc;
 }
 
-.samsat-table tr:hover {
-  background-color: #1a1a1a;
+/* Hover-state: Baris menyala terang saat dilewati kursor mouse */
+.samsat-table tbody tr:hover {
+  background-color: #242424 !important;
+  transition: background-color 0.2s ease;
 }
 
 .nomor-highlight {

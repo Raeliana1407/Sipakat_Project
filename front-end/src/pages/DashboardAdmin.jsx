@@ -134,8 +134,11 @@ const DashboardAdmin = () => {
       setIsModalOpen(false);
       ambilDataKendaraan();
     } catch (error) {
-      console.error("Detail Error:", error);
-      alert('Gagal menyimpan data kendaraan!');
+      console.error("Detail Error:", error.response ? error.response.data : error);
+      
+      // Tampilkan pesan error langsung dari backend kalau ada, biar ketahuan penyebab pastinya
+      const pesanError = error.response?.data?.error || 'Gagal menyimpan data kendaraan! Cek konsol browser.';
+      alert(pesanError);
     }
   };
 
@@ -345,9 +348,7 @@ const DashboardAdmin = () => {
                   <label>Status Pajak</label>
                   <select name="status_pajak" value={formData.status_pajak} onChange={handleInputChange} style={{ width: '100%', padding: '10px', backgroundColor: '#111', color: '#fff', border: '1px solid #444', borderRadius: '4px' }}>
                     <option value="Belum Lunas">Belum Lunas</option>
-                    <option value="AKTIF">AKTIF</option>
-                    <option value="MENUNGGAK">MENUNGGAK</option>
-                    <option value="BLOKIR">BLOKIR</option>
+                    <option value="Lunas">Lunas</option>
                   </select>
                 </div>
               </div>

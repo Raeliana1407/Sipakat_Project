@@ -26,3 +26,101 @@ body {
   /* Jaga-jaga biar div utama React lu juga kekunci */
   overflow-x: hidden; 
 }
+/* ========================================================================================
+   GLOBAL LIGHT THEME (ANTI-FLASHBANG V3 - MUTED PAPER CREAM)
+   Tembus ke semua halaman!
+   ======================================================================================== */
+body.light-theme {
+  background-color: #e4e1d9 !important; /* Warna kertas jadul/krim redup. Sangat adem. */
+  color: #2b2b2b !important;
+}
+
+/* Mematikan background hitam/gambar di wrapper semua halaman */
+body.light-theme .home-wrapper,
+body.light-theme .dashboard-wrapper,
+body.light-theme .cek-pajak-wrapper,
+body.light-theme .tunggu-wrapper,
+body.light-theme .login-wrapper {
+  background: transparent !important; 
+}
+
+/* Mengubah warna semua Kartu/Container di semua halaman */
+body.light-theme .service-card,
+body.light-theme .journal-info,
+body.light-theme .table-card,
+body.light-theme .modal-card,
+body.light-theme .ticket-card,
+body.light-theme .status-card,
+body.light-theme .login-card {
+  background-color: #f2f0ea !important; /* Sedikit lebih terang dari background luar */
+  border: 1px solid #d1cdc4 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Mengamankan warna teks Heading & Paragraf */
+body.light-theme h1, 
+body.light-theme h2, 
+body.light-theme h3, 
+body.light-theme p, 
+body.light-theme label, 
+body.light-theme td {
+  color: #2b2b2b !important;
+}
+
+/* --- REVISI NAVBAR BLEND DENGAN BACKGROUND --- */
+body.light-theme .navbar,
+body.light-theme .navbar-alt {
+  background: linear-gradient(to bottom, rgba(228, 225, 217, 1), rgba(228, 225, 217, 0)) !important;
+  border-bottom: none !important;
+}
+
+/* Dashboard Header dipisah biar tetap solid dan ada garis bawahnya */
+body.light-theme .dashboard-header {
+  background: #dbd8cf !important; 
+  border-bottom: 1px solid #c4c0b5 !important;
+}
+
+body.light-theme .logo-text, 
+body.light-theme .nav-links li {
+  color: #1a1a1a !important;
+}
+
+/* Mengamankan Input & Select Form biar jelas diketik */
+body.light-theme input,
+body.light-theme select {
+  background-color: #ffffff !important;
+  color: #1a1a1a !important;
+  border: 1px solid #b5b1a8 !important;
+}
+
+/* --- TABEL ADMIN (DashboardAdmin.jsx) --- */
+body.light-theme .samsat-table th {
+  background-color: #d1cdc4 !important;
+  color: #1a1a1a !important;
+  border-bottom: 2px solid #a39f96 !important;
+}
+body.light-theme .samsat-table tbody tr:nth-child(even) { background-color: #e4e1d9 !important; }
+body.light-theme .samsat-table tbody tr:nth-child(odd)  { background-color: #ebe8e1 !important; }
+body.light-theme .samsat-table tbody tr:hover { background-color: #d1cdc4 !important; }
+body.light-theme .samsat-table td { border-bottom: 1px solid #d1cdc4 !important; }
+
+/* ========================================================================================
+   REVISI FOOTER: Mengembalikan teks yang hilang dan menguningkan judul
+   ======================================================================================== */
+body.light-theme .main-footer {
+  background-color: #1a1a1a !important; 
+  border-top: 1px solid #c4c0b5 !important;
+}
+
+body.light-theme .main-footer h3,
+body.light-theme .main-footer .logo-text {
+  color: #D4AF37 !important; /* Judul Navigasi & Kontak jadi Emas */
+}
+
+body.light-theme .main-footer p {
+  color: #e4e1d9 !important; /* Teks biasa jadi krem terang biar kebaca */
+}
+
+body.light-theme .main-footer p:hover {
+  color: #D4AF37 !important; /* Efek kuning pas dilewatin mouse */
+}

@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Home.css';
 
-const Home = () => {
+const Home = ({ isLightMode, setIsLightMode }) => {
   const navigate = useNavigate();
+  const adaTiketAktif = localStorage.getItem('tiket_sipakat');
 
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
   const [nomorTiket, setNomorTiket] = useState(null);
@@ -42,7 +43,7 @@ const Home = () => {
   };
 
   return (
-    <div className="home-wrapper">
+    <div className={`home-wrapper ${isLightMode ? 'light-theme' : ''}`}>
       {/* SECTION 1: HERO */}
       <div className="hero-section">
         <nav className="navbar">
@@ -54,13 +55,33 @@ const Home = () => {
             <li onClick={() => navigate('/cek-pajak')}>Cek Pajak</li>
             <li onClick={() => navigate('/informasi')}>Informasi</li>
           </ul>
-          <button className="btn-login" onClick={() => navigate('/login')}>Login Petugas</button>
+          
+          {/* --- TOMBOL TEMA & LOGIN PETUGAS --- */}
+          <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+            <button 
+              onClick={() => setIsLightMode(!isLightMode)} 
+              style={{ background: 'transparent', border: 'none', fontSize: '1.3rem', cursor: 'pointer', transition: 'transform 0.2s' }}
+              title="Ganti Tema"
+            >
+              {isLightMode ? '🌙' : '☀️'}
+            </button>
+            <button className="btn-login" onClick={() => navigate('/login')}>Login Petugas</button>
+          </div>
         </nav>
 
         <main className="hero-content">
           <p className="hero-subtitle">Est. 2026</p>
           <h1 className="hero-title">Layanan SAMSAT<br/>Digital & Terintegrasi</h1>
-          <button className="btn-primary" onClick={() => navigate('/cek-pajak')}>Mulai Cek Pajak ➔</button>
+          
+          {/* PEMBARUAN: Tombol bersih tanpa inline style hardcoded */}
+          <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+            <button className="btn-primary" onClick={() => navigate('/cek-pajak')}>
+              Mulai Cek Pajak ➔
+            </button>
+            <button className="btn-pantau" onClick={() => navigate('/tunggu-antrean')}>
+              Pantau Antrean ➔
+            </button>
+          </div>
         </main>
 
         <div className="hero-stats">
@@ -222,10 +243,11 @@ const Home = () => {
                 <button 
                   className="btn-ticket-action" 
                   onClick={() => {
-                    navigate('/tunggu-antrean', { 
-                      state: { nomor: nomorTiket, layanan: layananTerpilih } 
-                    });
-                    // Bersihkan state modal setelah pindah halaman
+                    // SAVE KE LOCALSTORAGE SEBELUM PINDAH
+                    const dataTiketBaru = { nomor: nomorTiket, layanan: layananTerpilih };
+                    localStorage.setItem('tiket_sipakat', JSON.stringify(dataTiketBaru));
+
+                    navigate('/tunggu-antrean');
                     setNomorTiket(null);
                     setIsTicketModalOpen(false);
                   }}

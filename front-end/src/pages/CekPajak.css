@@ -358,3 +358,67 @@
   border-color: #D4AF37;
   background-color: #222;
 }
+/* ========================================================================================
+   SINKRONISASI LIGHT THEME UNTUK HALAMAN CEK PAJAK
+   ======================================================================================== */
+
+/* 1. Matiin background gradient hitam yang bandel */
+body.light-theme .cek-pajak-wrapper {
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+/* 2. Warna teks deskripsi header */
+body.light-theme .header-text .description {
+  color: #64748b !important;
+}
+
+/* 3. Form Input Plat Nomor biar putih bersih */
+body.light-theme .input-plat {
+  background-color: #ffffff !important;
+  color: #1a1a1a !important;
+  border: 1px solid #c4c0b5 !important;
+}
+
+/* 4. Kartu Hasil Pencarian (Result Card) */
+body.light-theme .result-card {
+  background-color: #f2f0ea !important;
+  border: 1px solid #d1cdc4 !important;
+  border-top: 3px solid #D4AF37 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 5. Teks Rincian Kendaraan di dalam kartu */
+body.light-theme .detail-item .label {
+  color: #64748b !important;
+}
+
+body.light-theme .detail-item .value {
+  color: #1a1a1a !important;
+  font-weight: 600 !important;
+}
+
+/* 6. Garis Pemisah (Divider) */
+body.light-theme .divider {
+  background-color: #d1cdc4 !important;
+}
+
+/* 7. Rincian Tagihan (PKB, SWDKLLJ, Denda) */
+body.light-theme .bill-row {
+  color: #475569 !important;
+}
+
+body.light-theme .bill-row.total {
+  color: #1a1a1a !important; 
+}
+
+/* 8. Tombol Lanjut Antrean */
+body.light-theme .result-card .btn-action {
+  border-color: #1a1a1a !important;
+  color: #1a1a1a !important;
+}
+
+body.light-theme .result-card .btn-action:hover {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}

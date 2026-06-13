@@ -19,4 +19,30 @@ const loginPetugas = async (req, res) => {
     }
 };
 
-module.exports = { loginPetugas };
+// --- TAMBAHIN FUNGSI INI ---
+const tambahPetugas = async (req, res) => {
+    try {
+        const { username, password, nama_lengkap, kode_loket } = req.body;
+
+        // Cek dulu biar nggak ada username yang kembar
+        const cekUser = await Petugas.findOne({ where: { username } });
+        if (cekUser) {
+            return res.status(400).json({ message: "Username sudah terdaftar, pakai yang lain!" });
+        }
+
+        // Bikin data admin baru ke database
+        const adminBaru = await Petugas.create({
+            username,
+            password, // Note: Saat ini password tersimpan mentah (plaintext).
+            nama_lengkap,
+            kode_loket
+        });
+
+        res.status(201).json({ message: "Admin/Petugas baru berhasil ditambahkan!", data: adminBaru });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Jangan lupa di-export
+module.exports = { loginPetugas, tambahPetugas };

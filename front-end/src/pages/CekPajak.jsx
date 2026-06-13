@@ -15,27 +15,47 @@ const CekPajak = () => {
   const [isLoadingAntrean, setIsLoadingAntrean] = useState(false);
   const [layananTerpilih, setLayananTerpilih] = useState('Pajak Tahunan');
 
-  const handleCekPajak = (e) => {
+  const handleCekPajak = async (e) => {
     e.preventDefault();
     setLoading(true);
     setHasilPajak(null);
 
-    // Simulasi loading nembak API backend (selama 1.5 detik)
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      // Narik spesifik 1 data dari endpoint yang baru kita bikin
+      const response = await axios.get(`http://localhost:5000/api/kendaraan/cek/${platNomor}`);
+      const kendaraanDitemukan = response.data;
+
+      // Format rupiah biar rapi
+      const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+      
+      const pajakPokok = Number(kendaraanDitemukan.total_pajak);
+      const swdkllj = 35000;
+      const denda = 0; 
+      const totalTagihan = pajakPokok + swdkllj + denda;
+
       setHasilPajak({
-        nopol: platNomor.toUpperCase(),
-        pemilik: 'Hamba Allah',
-        merek: 'HONDA VARIO 150',
-        tahun: 2021,
-        pajakPokok: 'Rp 250.000',
-        swdkllj: 'Rp 35.000',
-        denda: 'Rp 0',
-        total: 'Rp 285.000',
-        status: 'AKTIF',
-        jatuhTempo: '15 Agustus 2026'
+        nopol: kendaraanDitemukan.plat_nomor,
+        pemilik: kendaraanDitemukan.nama_pemilik,
+        merek: kendaraanDitemukan.merek_kendaraan,
+        tahun: kendaraanDitemukan.tahun_kendaraan,
+        pajakPokok: formatRupiah(pajakPokok),
+        swdkllj: formatRupiah(swdkllj),
+        denda: formatRupiah(denda),
+        total: formatRupiah(totalTagihan),
+        status: kendaraanDitemukan.status_pajak || 'Belum Lunas',
+        jatuhTempo: new Date(kendaraanDitemukan.tanggal_jatuh_tempo).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
       });
-    }, 1500);
+
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+         alert('Data kendaraan dengan Plat Nomor tersebut tidak ditemukan di sistem.');
+      } else {
+         console.error('Gagal narik data kendaraan:', error);
+         alert('Terjadi kesalahan sistem saat mengecek pajak. Coba lagi nanti.');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   // --- FUNGSI BUAT NYETAK ANTREAN ---

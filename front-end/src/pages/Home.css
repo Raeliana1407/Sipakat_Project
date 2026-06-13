@@ -1,9 +1,10 @@
 /* Base Wrapper */
 .home-wrapper {
-  background-color: #0a0a0a; /* Warna background gelap elegan */
+  background-color: #0a0a0a;
   color: #f0f0f0;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* SECTION 1: HERO */
@@ -16,6 +17,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: background-image 0.3s ease;
 }
 
 .navbar {
@@ -27,6 +29,7 @@
   top: 0;
   z-index: 100;
   background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+  transition: background 0.3s ease;
 }
 
 .nav-logo .logo-text {
@@ -35,6 +38,7 @@
   color: #D4AF37;
   letter-spacing: 2px;
   font-weight: 600;
+  transition: color 0.3s ease;
 }
 
 .nav-links {
@@ -86,12 +90,12 @@
 
 .hero-title {
   font-family: 'Playfair Display', serif;
-  /* Ganti 4.5rem jadi clamp biar dinamis */
   font-size: clamp(2.5rem, 8vw, 4.5rem); 
   font-weight: normal;
   line-height: 1.15;
   margin-bottom: 2.5rem;
   word-wrap: break-word;
+  transition: color 0.3s ease;
 }
 
 .btn-primary {
@@ -109,6 +113,24 @@
 .btn-primary:hover {
   transform: translateY(-3px);
   background-color: #b5952f;
+}
+
+/* --- TOMBOL PANTAU ANTREAN (MODE GELAP / DEFAULT) --- */
+.btn-pantau {
+  background-color: transparent;
+  color: #D4AF37; /* <-- FIX: Teks diubah jadi emas biar matching */
+  border: 1px solid #D4AF37;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-pantau:hover {
+  transform: translateY(-3px);
+  background-color: rgba(212, 175, 55, 0.1);
 }
 
 .hero-stats {
@@ -129,18 +151,21 @@
   font-size: 2.5rem;
   font-weight: normal;
   margin-bottom: 0.2rem;
+  transition: color 0.3s ease;
 }
 
 .stat-item p {
   font-size: 0.75rem;
   letter-spacing: 3px;
   color: #888;
+  transition: color 0.3s ease;
 }
 
 .stat-divider {
   width: 1px;
   height: 40px;
   background-color: rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease;
 }
 
 /* GLOBAL SECTION STYLES */
@@ -164,6 +189,7 @@ section {
   text-align: center;
   margin-bottom: 4rem;
   color: #fff;
+  transition: color 0.3s ease;
 }
 
 /* SECTION 2: DISCOVER */
@@ -177,7 +203,7 @@ section {
   background-color: #151515;
   padding: 3rem 2rem;
   border-top: 2px solid #D4AF37;
-  transition: transform 0.3s;
+  transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s, border 0.3s;
 }
 
 .service-card:hover {
@@ -189,6 +215,7 @@ section {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: #D4AF37;
+  transition: color 0.3s ease;
 }
 
 .service-card p {
@@ -196,21 +223,31 @@ section {
   line-height: 1.6;
   margin-bottom: 2rem;
   font-size: 0.95rem;
+  transition: color 0.3s ease;
 }
 
+/* --- PERBAIKAN REKOMENDASI AFFORDANCE CTA --- */
 .btn-link {
-  background: none;
-  border: none;
-  color: #fff;
+  display: inline-block;
+  background-color: transparent;
+  color: #D4AF37;
+  border: 1px solid #D4AF37;
+  padding: 0.6rem 1.5rem;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
-  transition: color 0.3s;
+  transition: all 0.3s ease;
+  margin-top: 10px;
 }
 
 .btn-link:hover {
-  color: #D4AF37;
+  background-color: #D4AF37;
+  color: #0a0a0a;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
 }
 
 /* SECTION 3: HERITAGE */
@@ -219,6 +256,7 @@ section {
   align-items: center;
   gap: 4rem;
   background-color: #0f0f0f;
+  transition: background-color 0.3s ease;
 }
 
 .heritage-content {
@@ -274,6 +312,7 @@ section {
   background-color: #151515;
   padding: 1.5rem;
   border-radius: 0 0 4px 4px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
 }
 
 .journal-info .date {
@@ -294,6 +333,7 @@ section {
   background-color: #050505;
   padding: 4rem 10% 2rem;
   border-top: 1px solid #222;
+  transition: background-color 0.3s ease;
 }
 
 .footer-content {
@@ -335,6 +375,7 @@ section {
   color: #555;
   font-size: 0.8rem;
 }
+
 /* =========================================
    MODAL TIKET ANTREAN PUBLIK
    ========================================= */
@@ -415,7 +456,7 @@ section {
   margin-top: 15px;
   width: 100%;
 }
-/* Tambahan untuk Dropdown Pilihan Layanan */
+
 .ticket-select-group {
   text-align: left;
   margin-bottom: 25px;
@@ -440,7 +481,7 @@ section {
   outline: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  appearance: none; /* Ngilangin panah default browser */
+  appearance: none;
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23D4AF37%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
   background-position: right 15px top 50%;
@@ -456,11 +497,11 @@ section {
   background-color: #111;
   color: white;
 }
+
 /* =========================================
    MEDIA QUERY UNTUK TAMPILAN MOBILE (HP)
    ========================================= */
 @media (max-width: 768px) {
-  /* Benerin Navbar biar gak numpuk */
   .navbar {
     flex-direction: column;
     gap: 15px;
@@ -472,8 +513,6 @@ section {
     flex-wrap: wrap;
     justify-content: center;
   }
-
-  /* Benerin bagian 100% / 0 Menit / 24/7 biar jejer ke bawah */
   .hero-stats {
     flex-direction: column;
     gap: 1.5rem;
@@ -482,33 +521,160 @@ section {
     width: 80px;
     height: 1px;
   }
-
-  /* Benerin Layanan Unggulan biar gak maksa 3 kolom */
   .services-grid {
     grid-template-columns: 1fr;
   }
-
-  /* Benerin Tentang Kami (Heritage) biar teks & gambar jejer ke bawah */
   .heritage-section {
     flex-direction: column;
     gap: 2rem;
     padding: 3rem 5%;
   }
-
-  /* Benerin Berita (Journal) biar 1 kolom */
   .journal-grid {
     grid-template-columns: 1fr;
   }
-
-  /* Benerin Footer biar gak numpuk berantakan */
   .footer-content {
     grid-template-columns: 1fr;
     text-align: center;
     gap: 2rem;
   }
-  
-  /* Padding section dikurangin biar gak terlalu kopong di HP */
   section {
     padding: 3rem 5%;
   }
+}
+
+/* ========================================================================================
+   ANTI-FLASHBANG V2: REVISI TEMA LIGHT MODE (KONTRAST TINGGI & ELEGAN)
+   ======================================================================================== */
+.light-theme {
+  background-color: #f8fafc; /* Cream/abu sangat muda, adem banget di mata */
+  color: #1e293b;
+}
+
+.light-theme .hero-section {
+  background-image: linear-gradient(to bottom, rgba(248, 250, 252, 0.85), rgba(248, 250, 252, 1)),
+                    url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1920&auto=format&fit=crop');
+}
+
+.light-theme .navbar {
+  background: linear-gradient(to bottom, rgba(248,250,252,0.95), transparent);
+}
+
+.light-theme .nav-links li {
+  color: #334155;
+  font-weight: 600;
+}
+
+.light-theme .nav-links li:hover {
+  color: #b48c1e;
+}
+
+/* FIX 1: Emas di atas putih itu buta. Ganti ke Slate Dark biar tegas! */
+.light-theme .nav-logo .logo-text {
+  color: #0f172a; 
+}
+
+.light-theme .btn-login {
+  color: #0f172a;
+  border-color: #0f172a;
+}
+
+.light-theme .btn-login:hover {
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+.light-theme .hero-title,
+.light-theme .section-title {
+  color: #0f172a;
+}
+
+/* FIX 2: Teks Putih di atas Emas = Silau. Ganti teks jadi gelap! */
+.light-theme .btn-primary {
+  background-color: #D4AF37; 
+  color: #0a0a0a !important; /* Teks Hitam tegas */
+}
+
+.light-theme .btn-primary:hover {
+  background-color: #b5952f;
+}
+
+.light-theme .btn-pantau {
+  background-color: #0f172a;
+  color: #ffffff;
+  border: 1px solid #0f172a;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.light-theme .btn-pantau:hover {
+  background-color: #1e293b;
+  transform: translateY(-3px);
+}
+
+/* FIX 3: Angka statistik emas di putih juga hilang. Ganti ke Slate Dark! */
+.light-theme .stat-item h2 {
+  color: #0f172a; 
+  font-weight: bold;
+}
+
+.light-theme .stat-item p {
+  color: #475569; 
+}
+
+.light-theme .stat-divider {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* KARTU BAWAH */
+.light-theme .service-card,
+.light-theme .journal-info {
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.light-theme .service-card h3 {
+  color: #0f172a;
+}
+
+.light-theme .service-card p {
+  color: #475569;
+}
+
+.light-theme .btn-link {
+  color: #0f172a;
+  border-color: #0f172a;
+}
+
+.light-theme .btn-link:hover {
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+.light-theme .heritage-section {
+  background-color: #f1f5f9;
+}
+
+.light-theme .main-footer {
+  background-color: #0f172a;
+}
+
+.light-theme .footer-links h3, 
+.light-theme .footer-contact h3,
+.light-theme .footer-brand p {
+  color: #f8fafc;
+}
+
+.light-theme .footer-links p, 
+.light-theme .footer-contact p {
+  color: #94a3b8;
+}
+
+.light-theme .footer-links p:hover, 
+.light-theme .footer-contact p:hover {
+  color: #D4AF37;
 }
