@@ -27,4 +27,6 @@ jobs:
     - name: Run All Tests with Coverage
       env:
         NODE_ENV: test
-      run: npm test -- --coverage
+      run: |
+        chmod +x ./node_modules/.bin/jest
+        npm test -- --coverage
