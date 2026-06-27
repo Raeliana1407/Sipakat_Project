@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet'); // Tambahan Helmet
-const rateLimit = require('express-rate-limit'); // Tambahan Rate Limit
+const helmet = require('helmet'); 
+const rateLimit = require('express-rate-limit'); 
 const db = require('./config/database'); 
 
 // Import rute
@@ -12,23 +12,21 @@ const kendaraanRoutes = require('./routes/kendaraanRoutes');
 const app = express();
 const PORT = 5000;
 
-// 1. Implementasi Helmet (Mengamankan HTTP Headers)
 app.use(helmet()); 
-
 app.use(cors());
 app.use(express.json());
 
-// 2. Implementasi Express Rate Limit (Mencegah Spam/DDoS)
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // Waktu 15 menit
-    max: 100, // Batas maksimal 100 request per IP dalam 15 menit
-    message: { error: "Terlalu banyak request dari IP ini, coba lagi dalam 15 menit." },
-    standardHeaders: true,
-    legacyHeaders: false,
-});
-
-// Terapkan limiter ke semua route API
-app.use('/api', limiter);
+// Limiter cuma nyala kalau BUKAN mode test
+if (process.env.NODE_ENV !== 'test') {
+    const limiter = rateLimit({
+        windowMs: 15 * 60 * 1000, 
+        max: 100, 
+        message: { error: "Terlalu banyak request dari IP ini, coba lagi dalam 15 menit." },
+        standardHeaders: true,
+        legacyHeaders: false,
+    });
+    app.use('/api', limiter);
+}
 
 // Daftarin alamat URL utama
 app.use('/api/antrean', antreanRoutes); 
@@ -39,19 +37,19 @@ app.get('/', (req, res) => {
     res.send('Halo Bro! Backend SIPAKAT sudah menyala 🔥');
 });
 
-db.sync({ force: false }) 
-  .then(() => {
-    console.log('Database tersinkronisasi via Sequelize!');
-    // Server baru jalan kalau database udah fix nyambung
-    if (process.env.NODE_ENV !== 'test') {
+// KUNCI UTAMA: Database cuma sinkron dan server cuma listen kalau BUKAN test
+if (process.env.NODE_ENV !== 'test') {
+    db.sync({ force: false }) 
+      .then(() => {
+        console.log('Database tersinkronisasi via Sequelize!');
         app.listen(PORT, () => {
             console.log(`Server SIPAKAT berjalan di http://localhost:${PORT}`);
         });
-    }
-  })
-  .catch(err => {
-    console.error('Waduh, gagal sinkronisasi database:', err);
-  });
+      })
+      .catch(err => {
+        console.error('Waduh, gagal sinkronisasi database:', err);
+      });
+}
 
-// WAJIB ADA DI BARIS PALING AKHIR BIAR BISA DI-IMPORT OLEH FILE TEST
+// WAJIB ADA DI BARIS PALING AKHIR
 module.exports = app;

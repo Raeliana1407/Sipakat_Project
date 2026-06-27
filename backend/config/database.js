@@ -1,13 +1,11 @@
 const { Sequelize } = require('sequelize');
 
-// Format: Sequelize('nama_database', 'username', 'password', { konfigurasi })
 const sequelize = new Sequelize('sipakat_db', 'root', '', {
     host: 'localhost',
     dialect: 'mysql',
     logging: false
 });
 
-// Tes Koneksi
 const testConnection = async () => {
     try {
         await sequelize.authenticate();
@@ -17,6 +15,9 @@ const testConnection = async () => {
     }
 };
 
-testConnection();
+// CUMA JALANIN KONEKSI KALAU BUKAN MODE TEST
+if (process.env.NODE_ENV !== 'test') {
+    testConnection();
+}
 
 module.exports = sequelize;

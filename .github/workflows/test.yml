@@ -1,23 +1,20 @@
 name: SIPAKAT Regression Test CI
-on: [push, pull_request]
+on: 
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: sipakat_db
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    defaults:
+      run:
+        working-directory: ./backend
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v3
     
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -26,16 +23,8 @@ jobs:
         
     - name: Install Dependencies
       run: npm install
-      working-directory: ./backend
 
-    - name: Run Tests (Modul Kendaraan)
-      # Kita kasih izin eksekusi dulu (chmod +x) baru jalankan langsung jest
-      run: |
-        chmod +x ./node_modules/.bin/jest
-        ./node_modules/.bin/jest --coverage --collectCoverageFrom="controllers/kendaraanController.js"
-      working-directory: ./backend
+    - name: Run All Tests with Coverage
       env:
-        DB_HOST: 127.0.0.1
-        DB_USER: root
-        DB_PASS: ''
-        DB_NAME: sipakat_db
+        NODE_ENV: test
+      run: npm test -- --coverage
